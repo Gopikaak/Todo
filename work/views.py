@@ -31,6 +31,7 @@ def mylogin(fn):
         
     return wrapper
 
+#=========================================================================================================== 
 class Registration(View):
     def get (self,request,**kwargs):
         form=Register
@@ -127,4 +128,24 @@ class User_delete(View):
         id=kwargs.get('pk')
         data=User.objects.get(id=id).delete()
         return redirect("signin")
+
+class Update_user(View):
+    def get(self,request,**kwargs):
+        id=kwargs.get('pk')
+        data=User.objects.get(id=id)
+        form=Register(instance=data)
+        return render(request,'register.html',{'form':form})
+    
+    def post(self,request,**kwargs):
+        id=kwargs.get('pk')
+        data=User.objects.get(id=id)
+        form=Register(request.POST,instance=data)
+
+        if form.is_valid():
+            form.save()
+        return redirect('signin')
+
+
+
+
 
